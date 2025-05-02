@@ -1,0 +1,23 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment files
+.pixi/
+*.toml.lock
+
+# VS Code settings
+.vscode/
+
+# Data (optional: commit only clean processed files)
+# data/raw/*
+# *.csv
+# *.pkl
+# *.npy
+
+# OS-specific
+.DS_Store
+Thumbs.db
