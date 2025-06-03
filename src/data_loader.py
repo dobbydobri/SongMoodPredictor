@@ -15,25 +15,32 @@ MOOD_KEYWORDS = [
 ]
 
 TAG_TO_MOOD = {
-    "happy": [
-        "happy", "cheer", "smile", "fun", "feelgood", "uplift", "joy", "joyous", "optimistic", "hopeful", "ecstatic", "euphoric"
+    "happy": [  # Positive, energetic, uplifting moods combined
+        "happy", "cheer", "smile", "fun", "feelgood", "uplift", "joy", "joyous",
+        "optimistic", "hopeful", "ecstatic", "euphoric", "energetic", "fast",
+        "drive", "adrenaline", "pump", "hype", "groove", "power", "triumphant"
     ],
-    "sad": [
-        "sad", "cry", "tear", "blue", "down", "depress", "melancholy", "heartache", "heartbreak", "lonely", "bitter", "despair", "nostalgic", "yearning"
+
+    "sad": [  # Sad, melancholy, nostalgic, and despair-related emotions
+        "sad", "cry", "tear", "blue", "down", "depress", "melancholy",
+        "heartache", "heartbreak", "lonely", "bitter", "despair", "nostalgic", "yearning"
     ],
-    "calm": [
-        "calm", "chill", "relax", "peace", "soothing", "ambient", "serene", "quiet", "mellow", "comforting", "meditat", "melodic"
+
+    "calm": [  # Calm, peaceful, relaxing moods
+        "calm", "chill", "relax", "peace", "soothing", "ambient", "serene",
+        "quiet", "mellow", "comforting", "meditat", "melodic"
     ],
-    "energetic": [
-        "energetic", "fast", "drive", "adrenaline", "pump", "hype", "groove", "power", "triumphant"
+
+    "emotional": [  # Deeply emotional, passionate, romantic, and vulnerable
+        "emotional", "expressive", "passion", "sentimental", "dramatic",
+        "heartfelt", "romantic", "vulnerable", "longing", "inspirational"
     ],
-    "emotional": [
-        "emotional", "expressive", "passion", "sentimental", "dramatic", "heartfelt", "romantic", "vulnerable", "longing", "inspirational"
-    ],
-    "angry": [
+
+    "angry": [  # Anger, aggression, and intensity
         "angry", "rage", "aggress", "fury", "vengeful", "intense"
     ]
 }
+
 
 def load_track_json_files(folder_path):
     """Load all JSON track files from a folder into a list of dicts."""

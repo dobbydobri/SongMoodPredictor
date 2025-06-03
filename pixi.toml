@@ -12,3 +12,9 @@ matplotlib = "*"
 networkx = "*"
 jupyterlab = "*"
 streamlit = "*"
+pytorch = "*"
+torchvision = "*"
+pip = "*"
+
+[pypi-dependencies]
+torch-geometric = "*"
