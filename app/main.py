@@ -18,7 +18,7 @@ st.write("This app will predict the mood of a song based on audio features.")
 songs_df = pd.read_csv('../data/raw/features/metadata/all_songs.csv')
 
 excluded_song_ids = ['48','3','116','386','47','324','646','691','634','329','656',
-                     '622','152','637','8','174','769','149','278','54','488','996','113']
+                     '622','152','637','8','174','769','149','278','54','488','996','113','1390','2006']
 
 test_songs_df = songs_df[songs_df['song_id'].astype(str).isin(excluded_song_ids)]
 
@@ -86,8 +86,17 @@ def predict_mood(track_id: str):
 
     return pred_mood
 
+# Streamlit UI for song selection
 song_choice = st.selectbox("Choose a song:", test_song_options)
 
+# Get the corresponding file path for the selected song based on song_id
+song_file = f'../data/raw/DEAM_audio/MEMD_audio/{song_to_id[song_choice]}.mp3'
+
+# Display the audio player if a song is selected
+if st.button("Play Song"):
+    st.audio(song_file)
+
+# Prediction when button is clicked
 if st.button("Predict Mood"):
     track_id = song_to_id[song_choice]
     predicted_mood = predict_mood(track_id)
