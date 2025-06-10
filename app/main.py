@@ -11,6 +11,117 @@ import joblib
 import matplotlib.pyplot as plt
 import networkx as nx
 import matplotlib.patches as mpatches
+import gc
+import matplotlib.colors as mcolors
+import shutil
+from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
+import sounddevice as sd
+import soundfile as sf
+import os
+import requests
+from bs4 import BeautifulSoup
+from langdetect import detect
+import re
+import whisper
+import yt_dlp
+import subprocess
+import datetime
+import sys
+
+#from text_mood_predictor import search_genius_lyrics,scrape_genius_lyrics,classify_long_text,load_emotion_model,load_whisper_model,delete_file,download_audio_youtube,transcribe_whisper,record_microphone,delete_microphone_file
+from audio_functions import delete_file,download_audio_youtube,transcribe_whisper,record_microphone,delete_microphone_file
+from cache_model_loading import load_emotion_model,load_whisper_model
+from chunk_classification import classify_long_text
+from lyrics_scraping_functions import search_genius_lyrics,scrape_genius_lyrics
+
+# Load models and tokenizer
+whisper_model = load_whisper_model()
+model, tokenizer = load_emotion_model()
+
+st.title("🎙️ Mood Detector — YouTube + Lyrics Scraper")
+
+mode = st.radio("Select input:", ["YouTube URL", "🎤 Microphone"])
+
+# After processing the song
+if mode == "YouTube URL":
+    url = st.text_input("Enter YouTube link")
+    if url and st.button("Analyze Song"):
+        with st.spinner("Downloading and processing audio..."):
+            mp3_file, title = download_audio_youtube(url)
+            st.write(f"Detected Title: **{title}**")
+
+            lyrics = search_genius_lyrics(title)
+            if lyrics:
+                st.success("✅ Lyrics fetched from Genius")
+                try:
+                    lang = detect(lyrics[:300])
+                    st.info(f"Detected language: {lang}")
+                except:
+                    st.warning("Could not detect language.")
+            else:
+                st.warning("Lyrics not found — transcribing audio instead...")
+                lyrics = transcribe_whisper(mp3_file)  # Use MP3 file for transcription
+
+            st.subheader("Lyrics/Text")
+            st.text_area("Lyrics/Text", value=lyrics or "— No lyrics/text —", height=300)
+
+            if not lyrics or len(lyrics.strip()) < 30:
+                st.warning("Lyrics are too short to analyze.")
+                st.stop()
+
+            result = classify_long_text(lyrics, model, tokenizer)
+            if result:
+                label = result['label']
+                score = result['score']
+                st.subheader("Predicted Mood")
+                st.success(label.capitalize())
+                st.info(f"Confidence: {score:.2%}")
+            else:
+                st.warning("Could not determine mood.")
+
+            # Provide download options for MP3
+            st.download_button("⬇️ Download MP3", data=open(mp3_file, 'rb').read(), file_name=mp3_file, mime="audio/mp3")
+
+            # Cleanup after the download is done
+            delete_file(mp3_file)
+
+        # Clean up memory by invoking garbage collection
+        gc.collect()  # Attempt to free up memory
+
+# After processing the microphone recording
+elif mode == "🎤 Microphone":
+    duration = st.slider("Recording duration (seconds)", 3, 15, 5)
+    if st.button("🎙️ Start Recording"):
+        with st.spinner("Recording..."):
+            fn = record_microphone(duration)
+        st.audio(fn)
+        st.download_button("⬇️ Download Recording", data=open(fn, 'rb').read(), file_name=fn, mime="audio/wav")
+
+        with st.spinner("Transcribing..."):
+            text = transcribe_whisper(fn)
+
+        st.subheader("Transcribed Text")
+        st.text_area("Transcription", value=text or "— No transcription —", height=300)
+
+        if text.strip():
+            result = model(text)
+            if result:
+                label = result[0]['label']
+                score = result[0]['score']
+                st.subheader("Predicted Mood")
+                st.success(label.capitalize())
+                st.info(f"Confidence: {score:.2%}")
+            else:
+                st.warning("Could not determine mood.")
+
+        # Provide download option for the microphone recording
+        st.download_button("⬇️ Download Microphone Recording", data=open(fn, 'rb').read(), file_name=fn, mime="audio/wav")
+
+        # Cleanup after processing is done
+        delete_microphone_file(fn)
+        
+        # Clean up memory by invoking garbage collection
+        gc.collect()  # Attempt to free up memory
 
 # Enable asynchronous event loop for Streamlit
 nest_asyncio.apply()

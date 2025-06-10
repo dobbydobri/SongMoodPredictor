@@ -230,7 +230,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/rfc3339-validator-0.1.4-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/rfc3986-validator-0.1.1-pyh9f0ad1d_0.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/win-64/rpds-py-0.25.1-py311hc4022dc_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.6.1-py311hdcb8d17_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.7.0-py311hdcb8d17_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/scipy-1.15.2-py311h99d06ae_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/send2trash-1.8.3-pyh5737063_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-75.8.2-pyhff2d567_0.conda
@@ -2752,7 +2752,8 @@ packages:
   - pandas >=2.0
   license: BSD-3-Clause
   license_family: BSD
-  purls: []
+  purls:
+  - pkg:pypi/networkx?source=hash-mapping
   size: 1265008
   timestamp: 1731521053408
 - conda: https://conda.anaconda.org/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
@@ -3589,15 +3590,16 @@ packages:
   - pkg:pypi/rpds-py?source=hash-mapping
   size: 249938
   timestamp: 1747837737577
-- conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.6.1-py311hdcb8d17_0.conda
-  sha256: a3bc68f2037abd9522d92bd82c170279a7268742d3f430c9bb790b2b5bbef85f
-  md5: c3a6f96c83982aac6ebcc8c98518521c
+- conda: https://conda.anaconda.org/conda-forge/win-64/scikit-learn-1.7.0-py311hdcb8d17_1.conda
+  sha256: eca5df090885b19a52538a19af914ff7501a3d73012a769bcf46c1e7b4830ae2
+  md5: f9abed9a624a265fdabbfbae6b621be0
   depends:
   - joblib >=1.2.0
   - numpy >=1.19,<3
+  - numpy >=1.22.0
   - python >=3.11,<3.12.0a0
   - python_abi 3.11.* *_cp311
-  - scipy
+  - scipy >=1.8.0
   - threadpoolctl >=3.1.0
   - ucrt >=10.0.20348.0
   - vc >=14.2,<15
@@ -3606,8 +3608,8 @@ packages:
   license_family: BSD
   purls:
   - pkg:pypi/scikit-learn?source=hash-mapping
-  size: 9617909
-  timestamp: 1736497581804
+  size: 9575281
+  timestamp: 1749488567240
 - conda: https://conda.anaconda.org/conda-forge/win-64/scipy-1.15.2-py311h99d06ae_0.conda
   sha256: 62ae1a1e02c919513213351474d1c72480fb70388a345fa81f1c95fa822d98bf
   md5: c7ec15b5ea6a27bb71af2ea5f7c97cbb
